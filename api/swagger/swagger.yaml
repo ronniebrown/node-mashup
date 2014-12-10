@@ -1,0 +1,148 @@
+swagger: "2.0"
+info:
+  version: "0.0.1"
+  title: Hello World App
+# during dev, should point to your local machine
+host: localhost
+# basePath prefixes all resource paths 
+basePath: /
+# 
+schemes:
+  # tip: remove http to make production-grade
+  - http
+  - https
+# format of bodies a client can send (Content-Type)
+consumes:
+  - application/xml
+  - application/json
+# format of the responses to the client (Accepts)
+produces:
+  - application/xml
+  - application/json
+x-a127-config: {}
+x-a127-services: {}
+paths:
+  /hello:
+    # binds a127 app logic to a route
+
+    x-swagger-router-controller: hello_world
+    x-a127-authorizations: {}
+    x-a127-apply: {}
+    get:
+      description: Returns 'Hello' to the caller
+      # used as the method name of the controller
+      operationId: hello
+      parameters:
+        - name: name
+          in: query
+          description: The name of the person to whom to say hello
+          required: false
+          type: string
+      responses:
+        "200":
+          description: Success
+          schema:
+            # a pointer to a definition
+            $ref: HelloWorldResponse
+        # responses may fall through to errors
+        default:
+          description: Error
+          schema:
+            $ref: ErrorResponse
+            
+    
+  /hotels:
+    # bind a127 app logic to a route
+    x-swagger-router-controller: hotels
+    x-a127-authorizations: {}
+    x-a127-apply: {}
+    get:
+      description: Returns a list of hotels in the area
+      # used as the method name of the controller
+      operationId: getHotels
+      parameters:
+        - name: location
+          in: query
+          description: The name of the person to whom to say hello
+          required: true
+          type: string
+      responses:
+        "200":
+          description: Success
+          schema:
+            # a pointer to a definition
+            $ref: HelloWorldResponse
+        # responses may fall through to errors
+        default:
+          description: Error
+          schema:
+            $ref: ErrorResponse
+
+  /restaurants:
+    # bind a127 app logic to a route
+    x-swagger-router-controller: restaurants
+    x-a127-authorizations: {}
+    x-a127-apply: {}
+    get:
+      description: Returns a list of restaurants in the area
+      # used as the method name of the controller
+      operationId: getRestaurants
+      parameters:
+        - name: location
+          in: query
+          description: The name of the person to whom to say hello
+          required: false
+          type: string
+      responses:
+        "200":
+          description: Success
+          schema:
+            # a pointer to a definition
+            $ref: HelloWorldResponse
+        # responses may fall through to errors
+        default:
+          description: Error
+          schema:
+            $ref: ErrorResponse
+
+  /restaurants/{id}:
+    # bind a127 app logic to a route
+    x-swagger-router-controller: restaurants
+    x-a127-authorizations: {}
+    x-a127-apply: {}
+    get:
+      description: Returns a single of restaurants in the area
+      # used as the method name of the controller
+      operationId: getRestaurantByID
+      parameters:
+        - name: id
+          in: path
+          description: The RestID of the restaurant
+          required: true
+          type: integer
+      responses:
+        "200":
+          description: Success
+          schema:
+            # a pointer to a definition
+            $ref: HelloWorldResponse
+        # responses may fall through to errors
+        default:
+          description: Error
+          schema:
+            $ref: ErrorResponse
+            
+# complex objects have schema definitions
+definitions:
+  HelloWorldResponse:
+    required:
+      - message
+    properties:
+      message:
+        type: string
+  ErrorResponse:
+    required:
+      - message
+    properties:
+      message:
+        type: string
